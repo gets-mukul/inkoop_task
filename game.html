@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta chrset="UTF 8">
+    <title>Number Game</title>
+</head>
+<body>
+
+
+
+<h1>Game</h1>
+<div style="display: inline">You have </div><div style="display: inline" id="coins"></div> INR
+<div id="continue">
+<button type="button" onClick="continueGame()" style="margin-top: 10px; margin-bottom: 10px;">Start</button>
+</div>
+<b><div style="display: inline"  id="a"></div>&nbsp;<div style="display: inline" id="b"></div>&nbsp;<div style="display: inline" id="c"></div></b>
+<div id="game_over">Game Over
+</div>
+<div id="message"></div>    
+
+<script type="text/javascript">
+document.getElementById('game_over').style.display='none';
+if(document.getElementById('coins').innerHTML=='')
+{
+	document.getElementById('coins').innerHTML="1000";
+}
+
+function continueGame() {
+		var coins = document.getElementById('coins').innerHTML;
+		coins = parseInt(coins);
+		if(coins>100){
+			coins-=100;
+			var isAllEven= false;
+			var isAllOdd = false;
+			var isInSequence= false;
+			var allSame=false;
+			var lucky= false;
+			var a = Math.floor(Math.random() * Math.floor(10));
+			var b = Math.floor(Math.random() * Math.floor(10));		
+			var c = Math.floor(Math.random() * Math.floor(10));
+			//set the value of a , b, c in DOM
+			document.getElementById('a').innerHTML=a;
+			document.getElementById('b').innerHTML=b;
+			document.getElementById('c').innerHTML=c;
+			//checking case of all equals
+			var message ="";
+			if(a==b && b==c)
+			{
+				allSame = true;
+				lucky= true;
+				coins+=1000;
+			}
+			//checking case of all even numbers
+			if(checkIfAllEven(a,b,c))
+			{
+				isAllEven = true;
+				lucky= true;
+				coins+=300;
+			}
+			//checking case of all odd numbers
+			else if(checkIfAllOdd(a,b,c))
+			{
+				isAllOdd= true;
+				lucky= true;
+				coins+=300;
+			}
+			//checking for all numbers with differnce as 1 in a sequence
+			else if(numberInSequence(a, b, c))
+			{
+				isInSequence = true;
+				lucky= true;
+				coins+=800;
+			}
+			
+		}
+		else{
+			//hide start button and show game over.
+			document.getElementById('continue').style.display='none';
+			document.getElementById('game_over').style.display='block';
+		}
+		if(lucky==false)
+		{
+			//show unlucky message
+			message= "You were not lucky this time";
+		}
+		else
+		{
+			//show messgae with condition
+			
+			if(allSame==true)
+			{
+				
+				message+= "You have won 1000 INR as all the numbers are same.";
+			}			
+			if(isAllOdd==true){
+				message+=" You have won 300 INR as all the numbers are odd.";
+			}
+			else if(isAllEven==true){
+				message+=" You have won 300 INR as all the numbers are even.";
+			}
+			else
+			{
+				message= "You won 800 INR as all the numbers in sequence.";
+			}
+				
+		}
+		document.getElementById('message').innerHTML=message;
+		document.getElementById('coins').innerHTML=coins;
+		}
+		
+	function checkIfAllEven(a,b,c)
+	{
+		return (a%2==0) && (b%2==0) && (c%2==0);
+	}
+	function checkIfAllOdd(a,b,c)
+	{
+		return (a%2!=0) && (b%2!=0) && (c%2!=0);
+	}
+	function numberInSequence(a,b,c)
+	{
+		var array = new Array();
+		array.push(a);
+		array.push(b);
+		array.push(c);
+		array.sort();
+		if(array[1]-array[0]==1 && array[2]-array[1]==1)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+    
+    
+</script>
+
+</body>
+</html>
